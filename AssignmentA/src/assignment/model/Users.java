@@ -20,7 +20,7 @@ public class Users {
 	private String Email;
 	private boolean admin;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Poll> polls = new ArrayList<Poll>();
 
 	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)

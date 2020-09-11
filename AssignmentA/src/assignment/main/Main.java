@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import assignment.model.Poll;
 import assignment.model.Users;
+import assignment.model.UsersDaoClass;
 
 
 public class Main {
@@ -19,14 +20,16 @@ public class Main {
 	public static void main(String[] args) {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
+        
+        UsersDaoClass dao1 = new UsersDaoClass();
 
 //        createUser("bicepsFlex","Jarek","Pasiak","12345","wojapak@gmail.com");
 
-        Query qus = em.createQuery("select u from Users u WHERE u.Uname = :Uname");
-        qus.setParameter("Uname", "xhexorikx");
-        Users user = (Users)qus.getSingleResult();
+//        Query qus = em.createQuery("select u from Users u WHERE u.Uname = :Uname");
+//        qus.setParameter("Uname", "xhexorikx");
+//        Users user = (Users)qus.getSingleResult();
         
-        createPoll("Test", "Test Poll", false, "Past", user);
+//        createPoll("Test", "Test Poll", false, "Past", user);
 //        Query qdelete = em.createQuery("SELECT p FROM Poll p where p.Status = :Status");
 //        qdelete.setParameter("Status", "Future");
 //        List<Poll> delList = qdelete.getResultList();
@@ -36,22 +39,32 @@ public class Main {
 //        }
 //        em.getTransaction().commit();
         
-        Query qsearch = em.createQuery("SELECT p FROM Poll p where p.User = :User");
-        qsearch.setParameter("User", user);
-        List<Poll> searchList = qsearch.getResultList();
-        em.getTransaction().begin();
-        for(Poll searchPoll : searchList) {
-        	System.out.println(searchPoll);
-        }
-        em.persist(user);
-        em.getTransaction().commit();
+//        Query qsearch = em.createQuery("SELECT p FROM Poll p where p.User = :User");
+//        qsearch.setParameter("User", user);
+//        List<Poll> searchList = qsearch.getResultList();
+//        em.getTransaction().begin();
+//        for(Poll searchPoll : searchList) {
+//        	System.out.println(searchPoll);
+//        }
+//        em.persist(user);
+//        em.getTransaction().commit();
         
         // read the existing entries and write to console
-//        Query quser = em.createQuery("select u from Users u");
-//        List<Users> userList = quser.getResultList();
-//        for (Users users : userList) {
-//            System.out.println(users);
-//        }
+        List<Users> ulist = dao1.getAllUsers();
+        System.out.println("List of Users:");
+        for (Users users : ulist) {
+            System.out.println(users);
+        }
+        Users oneUser = dao1.getUser("bicepsFlex");
+        System.out.println("One specific user:");
+        System.out.println(oneUser);
+        
+        dao1.updateUser(ulist.get(1));
+        System.out.println("Updated Username to all caps:");
+        List<Users> ulist1 = dao1.getAllUsers();
+        for (Users users : ulist1) {
+            System.out.println(users);
+        }
 //        Query qpoll = em.createQuery("SELECT p FROM Poll p");
 //        List<Poll> pollList = qpoll.getResultList();
 //        for (Poll polls : pollList) {
