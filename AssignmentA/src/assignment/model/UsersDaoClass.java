@@ -10,12 +10,7 @@ import javax.persistence.Query;
 public class UsersDaoClass implements UsersDao {
 	private static final String PERSISTENCE_UNIT_NAME = "assignment";
     private static EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-
     EntityManager em = factory.createEntityManager();
-
-	public UsersDaoClass() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public List<Users> getAllUsers() {
