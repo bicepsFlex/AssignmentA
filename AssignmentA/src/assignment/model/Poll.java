@@ -3,7 +3,9 @@ package assignment.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +25,10 @@ public class Poll {
 	private String Status;
 	private int TimeLimit;
 	
-	private Users Uname;
-	
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	private Users User;
+
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Users> usersVoted = new ArrayList<Users>();
 	
 	public String getName() {
@@ -86,26 +90,24 @@ public class Poll {
 	@Override
 	public String toString() {
 		return "ID = "+ PollID + ", Name = "+ Name +", Description = "+ Description +", Public = "+ isPublic +", Amount of green votes = "+ VoteGreen +
-				", Amount of red votes = "+ VoteRed +", Status = "+ Status +", Creator = "+ Uname;
+				", Amount of red votes = "+ VoteRed +", Status = "+ Status +", Creator = "+ User;
 	}
 	
 	@ManyToOne
-	public Users getUname() {
-		return Uname;
+	public Users getUser() {
+		return User;
 	}
 
-	public void setUname(Users uname) {
-		this.Uname = uname;
+	public void setUser(Users user) {
+		this.User = user;
 	}
 
-	
-	@ManyToMany
 	public List<Users> getUsersVoted() {
 		return usersVoted;
 	}
 
 	public void setUsersVoted(List<Users> usersVoted) {
-		this.usersVoted = usersVoted;
+		this.usersVoted.addAll(usersVoted);
 	}
 
 }

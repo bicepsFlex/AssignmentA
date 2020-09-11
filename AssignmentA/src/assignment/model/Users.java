@@ -3,7 +3,9 @@ package assignment.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -17,9 +19,11 @@ public class Users {
 	private String Password;
 	private String Email;
 	private boolean admin;
-	
+
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
 	private List<Poll> polls = new ArrayList<Poll>();
-	
+
+	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
 	private List<Poll> pollsVoted = new ArrayList<Poll>();
 
 	public String getUname() {
@@ -69,28 +73,27 @@ public class Users {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-	
-	@Override
-	public String toString() {
-		return "User name = "+ Uname +", Firstname = "+ Fname +", Lastname = "+ Lname;
-	}
 
-	@OneToMany
 	public List<Poll> getPolls() {
 		return polls;
 	}
 
-	public void setPolls(List<Poll> polls) {
-		this.polls = polls;
+	public void setPolls(Poll polls) {
+		this.polls.add(polls);
 	}
 	
-	@ManyToMany
 	public List<Poll> getPollsVoted() {
 		return pollsVoted;
 	}
 
 	public void setPollsVoted(List<Poll> pollsVoted) {
-		this.pollsVoted = pollsVoted;
+		this.pollsVoted.addAll(pollsVoted);
+	}
+
+	@Override
+	public String toString() {
+		return "Uname=" + Uname + ", Fname=" + Fname + ", Lname=" + Lname + ", Password=" + Password + ", Email="
+				+ Email + ", admin=" + admin + ", pollsVoted=" + pollsVoted;
 	}
 	
 }
