@@ -28,7 +28,7 @@ public class Poll {
 	@ManyToOne(cascade=CascadeType.REMOVE)
 	private Users User;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Users> usersVoted = new ArrayList<Users>();
 	
 	public String getName() {

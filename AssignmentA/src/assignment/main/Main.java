@@ -59,10 +59,23 @@ public class Main {
         System.out.println("One specific user:");
         System.out.println(oneUser);
         
-        dao1.updateUser(ulist.get(1));
-        System.out.println("Updated Username to all caps:");
+        dao1.updateUserFname(ulist.get(1), "biceps");
+        System.out.println("Updated First name to all caps:");
         List<Users> ulist1 = dao1.getAllUsers();
         for (Users users : ulist1) {
+            System.out.println(users);
+        }
+        dao1.deleteUser(ulist.get(0));
+        System.out.println("Delete One user:");
+        List<Users> ulist2 = dao1.getAllUsers();
+        for (Users users : ulist2) {
+            System.out.println(users);
+        }
+        
+        int user = 0;
+        List<Poll> plist = dao1.getUserPolls(ulist.get(user));
+        System.out.println("List of Polls for " + ulist.get(user).getUname() + " :");
+        for (Poll users : plist) {
             System.out.println(users);
         }
 //        Query qpoll = em.createQuery("SELECT p FROM Poll p");

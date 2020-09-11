@@ -23,7 +23,7 @@ public class Users {
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Poll> polls = new ArrayList<Poll>();
 
-	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Poll> pollsVoted = new ArrayList<Poll>();
 
 	public String getUname() {
