@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class UsersDaoClass implements UsersDao {
+public class UsersDAOClass implements UsersDAO {
 	private static final String PERSISTENCE_UNIT_NAME = "assignment";
     private static EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
     EntityManager em = factory.createEntityManager();

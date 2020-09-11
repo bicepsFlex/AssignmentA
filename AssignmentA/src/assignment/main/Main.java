@@ -10,7 +10,7 @@ import javax.persistence.Query;
 
 import assignment.model.Poll;
 import assignment.model.Users;
-import assignment.model.UsersDaoClass;
+import assignment.model.UsersDAOClass;
 
 
 public class Main {
@@ -21,7 +21,7 @@ public class Main {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
         
-        UsersDaoClass dao1 = new UsersDaoClass();
+        UsersDAOClass dao1 = new UsersDAOClass();
 
 //        createUser("bicepsFlex","Jarek","Pasiak","12345","wojapak@gmail.com");
 
