@@ -1,0 +1,30 @@
+{
+	"folders": {},
+	"connections": {
+		"derby-1747d88c072-688fee0998a11f11": {
+			"provider": "generic",
+			"driver": "derby",
+			"name": "AssignmentA",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"database": "C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\AssignmentA",
+				"url": "jdbc:derby:C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\AssignmentA",
+				"type": "dev",
+				"auth-model": "native",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false
+		}
+	}
+}
