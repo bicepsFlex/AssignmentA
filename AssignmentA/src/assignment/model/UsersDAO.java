@@ -13,24 +13,27 @@ public interface UsersDAO {
 	/**
 	 * Returns one specific user
 	 * @param Uname Username of the user
-	 * @return User as 
+	 * @return User as Users object
 	 */
 	public Users getUser(String Uname);
 	
 	/**
-	 * @param user
-	 * @param newFname
+	 * Updates Users first name
+	 * @param user User to update
+	 * @param newFname New first name
 	 */
 	public void updateUserFname(Users user, String newFname);
 	
 	/**
-	 * @param user
+	 * Deletes a user
+	 * @param user User to delete
 	 */
 	public void deleteUser(Users user);
 	
 	/**
-	 * @param user
-	 * @return
+	 * Returns Polls the user has created
+	 * @param user User which you want the polls of
+	 * @return List of polls
 	 */
 	public List<Poll> getUserPolls(Users user);
 }

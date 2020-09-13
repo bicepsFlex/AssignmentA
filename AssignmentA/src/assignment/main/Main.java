@@ -34,11 +34,19 @@ public class Main {
         
 //        createPoll("Second poll", "Let's make one more", true, "Future", user);
 //        PDAO();
-        PDAO();
+        UDAO();
         
         em.close();
 	}
 	
+	/**
+	 * Creates a user with given parameters
+	 * @param Uname Username of the User
+	 * @param Fname Users first name
+	 * @param Lname Users last name
+	 * @param Password Password for the user
+	 * @param Email User Email address
+	 */
 	private static void createUser(String Uname, String Fname, String Lname, String Password, String Email) {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		EntityManager em = factory.createEntityManager();
@@ -55,6 +63,14 @@ public class Main {
 		em.getTransaction().commit();
 	}
 	
+	/**
+	 * Creates a Poll with given parameters
+	 * @param Name Name of the poll
+	 * @param Description Description to describe the poll
+	 * @param isPublic =true if poll is to be public
+	 * @param Status Status of the poll {Past, Present, Future}
+	 * @param Creator User that created the poll
+	 */
 	private static void createPoll(String Name, String Description, boolean isPublic, String Status, Users Creator) {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		EntityManager em = factory.createEntityManager();
