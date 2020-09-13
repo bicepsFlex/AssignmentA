@@ -31,6 +31,7 @@ public class UsersDAOClass implements UsersDAO {
 	public void updateUserFname(Users user, String newFname) {
 		user.setFname(newFname);
 		em.persist(user);
+//		em.getTransaction().commit();
 	}
 
 	@Override
@@ -46,14 +47,12 @@ public class UsersDAOClass implements UsersDAO {
 		}
 		Query qdelete = em.createQuery("DELETE FROM Users u WHERE u.Uname = :user");
 		qdelete.setParameter("user", user.getUname()).executeUpdate();
+//		em.getTransaction().commit();
 	}
 
 	@Override
 	public List<Poll> getUserPolls(Users user) {
-	    Query quserpoll = em.createQuery("SELECT p FROM Poll p WHERE p.User = :user");
-	    quserpoll.setParameter("user", user);
-	    List<Poll> userpollList = quserpoll.getResultList();
-		return userpollList;
+		return user.getPolls();
 	}
 
 }

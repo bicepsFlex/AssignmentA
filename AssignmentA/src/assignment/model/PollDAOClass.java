@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class PollDAOClass implements PollDAO {
 	private static final String PERSISTENCE_UNIT_NAME = "assignment";
@@ -13,32 +14,48 @@ public class PollDAOClass implements PollDAO {
 	
 	@Override
 	public List<Poll> getAllPolls() {
-		// TODO Auto-generated method stub
-		return null;
+	    Query quser = em.createQuery("SELECT p FROM Poll p");
+	    List<Poll> pollList = quser.getResultList();
+		return pollList;
 	}
 
 	@Override
-	public Users getPoll(String Name) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Poll> getPoll(String Name) {
+		Query quser = em.createQuery("SELECT p FROM Poll p WHERE p.Name LIKE :Name");
+		quser.setParameter("Name", "%"+Name+"%");
+		List<Poll> polls = quser.getResultList();
+		return polls;
 	}
 
 	@Override
 	public void updatePollDescription(Poll poll, String newDesc) {
-		// TODO Auto-generated method stub
-
+		poll.setDescription(newDesc);
+		em.persist(poll);
+//		em.getTransaction().commit();
 	}
 
 	@Override
 	public void deletePoll(Poll poll) {
-		// TODO Auto-generated method stub
-
+		em.getTransaction().begin();
+		poll.getUser().removePoll(poll);
+		Query qdelete = em.createQuery("DELETE FROM Poll p WHERE p.PollID = :PollID");
+		qdelete.setParameter("PollID", poll.getPollID()).executeUpdate();
+//		em.getTransaction().commit();
 	}
 
 	@Override
+	public void pollAddVotes(Poll poll, Users user, int green, int red) {
+//		em.getTransaction().begin();
+		poll.setVoteGreen(green);
+		poll.setVoteRed(red);
+		poll.setUsersVoted(user);
+//		em.merge(poll);
+//		em.getTransaction().commit();
+	}
+	
+	@Override
 	public String getPollVotes(Poll poll) {
-		// TODO Auto-generated method stub
-		return null;
+		return ("Green: "+ poll.getVoteGreen() +", Red: "+ poll.getVoteRed());
 	}
 
 }

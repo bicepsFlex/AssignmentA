@@ -20,10 +20,10 @@ public class Users {
 	private String Email;
 	private boolean admin;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Poll> polls = new ArrayList<Poll>();
 
-	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Poll> pollsVoted = new ArrayList<Poll>();
 
 	public String getUname() {
@@ -73,21 +73,28 @@ public class Users {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-
+	
 	public List<Poll> getPolls() {
 		return polls;
 	}
 
-	public void setPolls(Poll polls) {
-		this.polls.add(polls);
+	public void setPolls(Poll poll) {
+		this.polls.add(poll);
+		poll.setUser(this);
 	}
 	
+	public void removePoll(Poll poll) {
+		poll.setUser(null);
+		this.polls.remove(poll);
+	}
+	
+	@ManyToMany
 	public List<Poll> getPollsVoted() {
 		return pollsVoted;
 	}
 
-	public void setPollsVoted(List<Poll> pollsVoted) {
-		this.pollsVoted.addAll(pollsVoted);
+	public void setPollsVoted(Poll poll) {
+		this.pollsVoted.add(poll);
 	}
 
 	@Override

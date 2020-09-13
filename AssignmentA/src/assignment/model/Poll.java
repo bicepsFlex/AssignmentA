@@ -31,6 +31,10 @@ public class Poll {
 	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Users> usersVoted = new ArrayList<Users>();
 	
+	public int getPollID() {
+		return PollID;
+	}
+	
 	public String getName() {
 		return Name;
 	}
@@ -60,7 +64,7 @@ public class Poll {
 	}
 	
 	public void setVoteGreen(int voteGreen) {
-		this.VoteGreen = voteGreen;
+		this.VoteGreen += voteGreen;
 	}
 	
 	public int getVoteRed() {
@@ -68,7 +72,7 @@ public class Poll {
 	}
 	
 	public void setVoteRed(int voteRed) {
-		this.VoteRed = voteRed;
+		this.VoteRed += voteRed;
 	}
 	
 	public String getStatus() {
@@ -90,7 +94,7 @@ public class Poll {
 	@Override
 	public String toString() {
 		return "ID = "+ PollID + ", Name = "+ Name +", Description = "+ Description +", Public = "+ isPublic +", Amount of green votes = "+ VoteGreen +
-				", Amount of red votes = "+ VoteRed +", Status = "+ Status +", Creator = "+ User;
+				", Amount of red votes = "+ VoteRed +", Status = "+ Status;
 	}
 	
 	@ManyToOne
@@ -106,8 +110,8 @@ public class Poll {
 		return usersVoted;
 	}
 
-	public void setUsersVoted(List<Users> usersVoted) {
-		this.usersVoted.addAll(usersVoted);
+	public void setUsersVoted(Users userVoted) {
+		this.usersVoted.add(userVoted);
 	}
 
 }

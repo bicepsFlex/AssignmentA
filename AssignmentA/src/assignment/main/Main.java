@@ -8,8 +8,13 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.eclipse.persistence.jpa.jpql.parser.TrimExpression.Specification;
+
 import assignment.model.Poll;
+import assignment.model.PollDAO;
+import assignment.model.PollDAOClass;
 import assignment.model.Users;
+import assignment.model.UsersDAO;
 import assignment.model.UsersDAOClass;
 
 
@@ -20,70 +25,17 @@ public class Main {
 	public static void main(String[] args) {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
-        
-        UsersDAOClass dao1 = new UsersDAOClass();
 
-//        createUser("bicepsFlex","Jarek","Pasiak","12345","wojapak@gmail.com");
-
-//        Query qus = em.createQuery("select u from Users u WHERE u.Uname = :Uname");
-//        qus.setParameter("Uname", "xhexorikx");
-//        Users user = (Users)qus.getSingleResult();
+//        createUser("xHexorikx","Wojtek","Pasiak","54321","wojtpa@gmail.com");
+//        createUser("bicepsFlex","Jarek","Pasiak","12345","wojapa@gmail.com");
         
-//        createPoll("Test", "Test Poll", false, "Past", user);
-//        Query qdelete = em.createQuery("SELECT p FROM Poll p where p.Status = :Status");
-//        qdelete.setParameter("Status", "Future");
-//        List<Poll> delList = qdelete.getResultList();
-//        em.getTransaction().begin();
-//        for(Poll delpoll : delList) {
-//        	em.remove(delpoll);
-//        }
-//        em.getTransaction().commit();
+        UsersDAOClass uDao = new UsersDAOClass();
+        Users user = uDao.getUser("bicepsFlex");
         
-//        Query qsearch = em.createQuery("SELECT p FROM Poll p where p.User = :User");
-//        qsearch.setParameter("User", user);
-//        List<Poll> searchList = qsearch.getResultList();
-//        em.getTransaction().begin();
-//        for(Poll searchPoll : searchList) {
-//        	System.out.println(searchPoll);
-//        }
-//        em.persist(user);
-//        em.getTransaction().commit();
+//        createPoll("Second poll", "Let's make one more", true, "Future", user);
+//        PDAO();
+        PDAO();
         
-        // read the existing entries and write to console
-        List<Users> ulist = dao1.getAllUsers();
-        System.out.println("List of Users:");
-        for (Users users : ulist) {
-            System.out.println(users);
-        }
-        Users oneUser = dao1.getUser("bicepsFlex");
-        System.out.println("One specific user:");
-        System.out.println(oneUser);
-        
-        dao1.updateUserFname(ulist.get(1), "biceps");
-        System.out.println("Updated First name to all caps:");
-        List<Users> ulist1 = dao1.getAllUsers();
-        for (Users users : ulist1) {
-            System.out.println(users);
-        }
-        dao1.deleteUser(ulist.get(0));
-        System.out.println("Delete One user:");
-        List<Users> ulist2 = dao1.getAllUsers();
-        for (Users users : ulist2) {
-            System.out.println(users);
-        }
-        
-        int user = 0;
-        List<Poll> plist = dao1.getUserPolls(ulist.get(user));
-        System.out.println("List of Polls for " + ulist.get(user).getUname() + " :");
-        for (Poll users : plist) {
-            System.out.println(users);
-        }
-//        Query qpoll = em.createQuery("SELECT p FROM Poll p");
-//        List<Poll> pollList = qpoll.getResultList();
-//        for (Poll polls : pollList) {
-//        	System.out.println(polls);
-//        }
-
         em.close();
 	}
 	
@@ -116,10 +68,82 @@ public class Main {
 		poll.setVoteRed(0);
 		poll.setStatus(Status);
 		poll.setTimeLimit(2);
-		poll.setUser(Creator);
 		Creator.setPolls(poll);
-		em.persist(poll);
+		em.merge(Creator);
 		em.getTransaction().commit();
 	}
+	
+	private static void PDAO() {
+        PollDAO pdao = new PollDAOClass();
+        
+		List<Poll> plist = pdao.getAllPolls();
+        System.out.println("List of all Polls:");
+        for (Poll polls : plist) {
+            System.out.println(polls);
+        }
+        
+        List<Poll> specPoll = pdao.getPoll("F");
+        System.out.println("List of Polls including specific string in name:");
+        for (Poll specPolls : specPoll) {
+        	System.out.println(specPolls);
+        }
+        
+        pdao.updatePollDescription(plist.get(2), "new Description");
+        List<Poll> plist1 = pdao.getAllPolls();
+        System.out.println("List of all Polls after updating one Description:");
+        for (Poll polls : plist1) {
+            System.out.println(polls);
+        }
+        
+        pdao.deletePoll(plist.get(0));
+        List<Poll> plist2 = pdao.getAllPolls();
+        System.out.println("List of all Polls afte deleting one Poll:");
+        for (Poll polls : plist2) {
+            System.out.println(polls);
+        }
 
+        UsersDAO uDao = new UsersDAOClass();
+        Users user = uDao.getUser("bicepsFlex");
+        
+        pdao.pollAddVotes(plist.get(0), user, 2, 1);
+        
+        int poll = 0;
+        System.out.println("All votes on poll: "+ plist.get(poll).getPollID());
+        System.out.println(pdao.getPollVotes(plist.get(poll)));
+	}
+
+	private static void UDAO() {
+        UsersDAO udao = new UsersDAOClass();
+        
+        List<Users> ulist = udao.getAllUsers();
+        System.out.println("List of all Users:");
+        for (Users users : ulist) {
+            System.out.println(users);
+        }
+        
+        Users oneUser = udao.getUser("bicepsFlex");
+        System.out.println("One specific user:");
+        System.out.println(oneUser);
+        
+        udao.updateUserFname(ulist.get(1), "biceps");
+        System.out.println("Updated First name to all caps:");
+        List<Users> ulist1 = udao.getAllUsers();
+        for (Users users : ulist1) {
+            System.out.println(users);
+        }
+
+        udao.deleteUser(ulist.get(1));
+        System.out.println("Delete One user:");
+        List<Users> ulist2 = udao.getAllUsers();
+        for (Users users : ulist2) {
+            System.out.println(users);
+        }
+        
+        int user = 1;
+        List<Poll> pulist = udao.getUserPolls(ulist.get(user));
+        System.out.println("List of Polls for " + ulist.get(user).getUname() + " :");
+        for (Poll users : pulist) {
+            System.out.println(users);
+        }
+	}
 }
