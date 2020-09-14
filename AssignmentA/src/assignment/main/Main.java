@@ -8,7 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import org.eclipse.persistence.jpa.jpql.parser.TrimExpression.Specification;
 
 import assignment.model.Poll;
 import assignment.model.PollDAO;
@@ -19,78 +18,18 @@ import assignment.model.UsersDAOClass;
 
 
 public class Main {
-	private static final String PERSISTENCE_UNIT_NAME = "assignment";
-    private static EntityManagerFactory factory;
-	
+	    
 	public static void main(String[] args) {
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager em = factory.createEntityManager();
-
-//        createUser("xHexorikx","Wojtek","Pasiak","54321","wojtpa@gmail.com");
-//        createUser("bicepsFlex","Jarek","Pasiak","12345","wojapa@gmail.com");
         
-        UsersDAOClass uDao = new UsersDAOClass();
-        Users user = uDao.getUser("bicepsFlex");
-        
-//        createPoll("Second poll", "Let's make one more", true, "Future", user);
-//        PDAO();
-        UDAO();
-        
-        em.close();
-	}
-	
-	/**
-	 * Creates a user with given parameters
-	 * @param Uname Username of the User
-	 * @param Fname Users first name
-	 * @param Lname Users last name
-	 * @param Password Password for the user
-	 * @param Email User Email address
-	 */
-	private static void createUser(String Uname, String Fname, String Lname, String Password, String Email) {
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		EntityManager em = factory.createEntityManager();
-		
-		em.getTransaction().begin();
-		Users user = new Users();
-		user.setUname(Uname);
-		user.setFname(Fname);
-		user.setLname(Lname);
-		user.setPassword(Password);
-		user.setEmail(Email);
-		user.setAdmin(true);
-		em.persist(user);
-		em.getTransaction().commit();
-	}
-	
-	/**
-	 * Creates a Poll with given parameters
-	 * @param Name Name of the poll
-	 * @param Description Description to describe the poll
-	 * @param isPublic =true if poll is to be public
-	 * @param Status Status of the poll {Past, Present, Future}
-	 * @param Creator User that created the poll
-	 */
-	private static void createPoll(String Name, String Description, boolean isPublic, String Status, Users Creator) {
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		EntityManager em = factory.createEntityManager();
-		
-		em.getTransaction().begin();
-		Poll poll = new Poll();
-		poll.setName(Name);
-		poll.setDescription(Description);
-		poll.setPublic(isPublic);
-		poll.setVoteGreen(0);
-		poll.setVoteRed(0);
-		poll.setStatus(Status);
-		poll.setTimeLimit(2);
-		Creator.setPolls(poll);
-		em.merge(Creator);
-		em.getTransaction().commit();
+//        UDAO();
+        PDAO();
 	}
 	
 	private static void PDAO() {
         PollDAO pdao = new PollDAOClass();
+        
+        UsersDAO uDao = new UsersDAOClass();
+        Users user = uDao.getUser("bicepsFlex");
         
 		List<Poll> plist = pdao.getAllPolls();
         System.out.println("List of all Polls:");
@@ -113,23 +52,25 @@ public class Main {
         
         pdao.deletePoll(plist.get(0));
         List<Poll> plist2 = pdao.getAllPolls();
-        System.out.println("List of all Polls afte deleting one Poll:");
+        System.out.println("List of all Polls after deleting one Poll:");
         for (Poll polls : plist2) {
             System.out.println(polls);
         }
-
-        UsersDAO uDao = new UsersDAOClass();
-        Users user = uDao.getUser("bicepsFlex");
+        
+        pdao.createPoll("Second poll", "Let's make one more", true, "Future", user);
         
         pdao.pollAddVotes(plist.get(0), user, 2, 1);
         
         int poll = 0;
         System.out.println("All votes on poll: "+ plist.get(poll).getPollID());
         System.out.println(pdao.getPollVotes(plist.get(poll)));
+        
 	}
 
 	private static void UDAO() {
         UsersDAO udao = new UsersDAOClass();
+        
+        udao.createUser("DAT250","Software","Engineering","12345","uib@hvl.no");
         
         List<Users> ulist = udao.getAllUsers();
         System.out.println("List of all Users:");
@@ -142,7 +83,7 @@ public class Main {
         System.out.println(oneUser);
         
         udao.updateUserFname(ulist.get(1), "biceps");
-        System.out.println("Updated First name to all caps:");
+        System.out.println("Updated First name to a new given name:");
         List<Users> ulist1 = udao.getAllUsers();
         for (Users users : ulist1) {
             System.out.println(users);
@@ -161,5 +102,6 @@ public class Main {
         for (Poll users : pulist) {
             System.out.println(users);
         }
+        
 	}
 }

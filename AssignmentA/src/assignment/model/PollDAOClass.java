@@ -29,18 +29,21 @@ public class PollDAOClass implements PollDAO {
 
 	@Override
 	public void updatePollDescription(Poll poll, String newDesc) {
+		em.getTransaction().begin();
 		poll.setDescription(newDesc);
 		em.persist(poll);
 //		em.getTransaction().commit();
+//		em.close();
 	}
 
 	@Override
 	public void deletePoll(Poll poll) {
-		em.getTransaction().begin();
+//		em.getTransaction().begin();
 		poll.getUser().removePoll(poll);
 		Query qdelete = em.createQuery("DELETE FROM Poll p WHERE p.PollID = :PollID");
 		qdelete.setParameter("PollID", poll.getPollID()).executeUpdate();
 //		em.getTransaction().commit();
+//		em.close();
 	}
 
 	@Override
@@ -51,6 +54,7 @@ public class PollDAOClass implements PollDAO {
 		poll.setUsersVoted(user);
 //		em.merge(poll);
 //		em.getTransaction().commit();
+//		em.close();
 	}
 	
 	@Override
@@ -58,4 +62,20 @@ public class PollDAOClass implements PollDAO {
 		return ("Green: "+ poll.getVoteGreen() +", Red: "+ poll.getVoteRed());
 	}
 
+	public void createPoll(String Name, String Description, boolean isPublic, String Status, Users Creator) {
+//		em.getTransaction().begin();
+		Poll poll = new Poll();
+		poll.setName(Name);
+		poll.setDescription(Description);
+		poll.setPublic(isPublic);
+		poll.setVoteGreen(0);
+		poll.setVoteRed(0);
+		poll.setStatus(Status);
+		poll.setTimeLimit(2);
+		Creator.setPolls(poll);
+		em.merge(Creator);
+//		em.getTransaction().commit();
+//		em.close();
+	}
+	
 }

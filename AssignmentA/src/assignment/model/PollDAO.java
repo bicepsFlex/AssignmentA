@@ -50,4 +50,14 @@ public interface PollDAO {
 	 */
 	public String getPollVotes(Poll poll);
 
+	/**
+	 * Creates a Poll with given parameters
+	 * @param Name Name of the poll
+	 * @param Description Description to describe the poll
+	 * @param isPublic =true if poll is to be public
+	 * @param Status Status of the poll {Past, Present, Future}
+	 * @param Creator User that created the poll
+	 */
+	public void createPoll(String Name, String Description, boolean isPublic, String Status, Users Creator);
+
 }
