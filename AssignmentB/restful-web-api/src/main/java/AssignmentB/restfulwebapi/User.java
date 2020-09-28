@@ -10,14 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+@Data
 @Entity
 public class User {
+
 	@Id
-	private String Uname;
-	private String Fname;
-	private String Lname;
-	private String Password;
-	private String Email;
+	private String uname;
+	private String fname;
+	private String lname;
+	private String password;
+	private String email;
 	private boolean admin;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
@@ -25,57 +32,16 @@ public class User {
 
 	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Poll> pollsVoted = new ArrayList<Poll>();
-
-	public String getUname() {
-		return Uname;
-	}
-
-	public void setUname(String uname) {
-		this.Uname = uname;
-	}
-
-	public String getFname() {
-		return Fname;
-	}
-
-	public void setFname(String fname) {
-		this.Fname = fname;
-	}
-
-	public String getLname() {
-		return Lname;
-	}
-
-	public void setLname(String lname) {
-		this.Lname = lname;
-	}
-
-	public String getPassword() {
-		return Password;
-	}
-
-	public void setPassword(String password) {
-		this.Password = password;
-	}
-
-	public String getEmail() {
-		return Email;
-	}
-
-	public void setEmail(String email) {
-		this.Email = email;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
 	
-	public List<Poll> getPolls() {
-		return polls;
+	public User() {}
+	
+	public User(String uname, String fname, String lname, String password, String email, boolean admin) {
+		this.uname = uname;
+		this.fname = fname;
+		this.lname = lname;
+		this.password = password;
+		this.email = email;
+		this.admin = admin;
 	}
 
 	public void setPolls(Poll poll) {
@@ -87,20 +53,10 @@ public class User {
 		poll.setUser(null);
 		this.polls.remove(poll);
 	}
-	
-	@ManyToMany
-	public List<Poll> getPollsVoted() {
-		return pollsVoted;
-	}
 
 	public void setPollsVoted(Poll poll) {
 		this.pollsVoted.add(poll);
 	}
 
-	@Override
-	public String toString() {
-		return "Uname=" + Uname + ", Fname=" + Fname + ", Lname=" + Lname + ", Password=" + Password + ", Email="
-				+ Email + ", admin=" + admin + ", pollsVoted=" + pollsVoted;
-	}
 	
 }

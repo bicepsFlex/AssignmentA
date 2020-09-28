@@ -12,8 +12,21 @@
 				"database": "C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\AssignmentA",
 				"url": "jdbc:derby:C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\AssignmentA",
 				"type": "dev",
-				"auth-model": "native",
-				"handlers": {}
+				"auth-model": "native"
+			}
+		},
+		"derby-1747d8a44ad-73a8444a2b7758de": {
+			"provider": "generic",
+			"driver": "derby",
+			"name": "expass2",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"database": "C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\expass2",
+				"url": "jdbc:derby:C:\\Users\\Jarek\\Desktop\\Szkola\\MAMN-PROG\\DAT250\\database\\expass2",
+				"type": "dev",
+				"auth-model": "native"
 			}
 		}
 	},

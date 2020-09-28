@@ -5,6 +5,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends PagingAndSortingRepository<User, String>{
 	
-	User findByUname(@Param("uname") String uname);
+	User findByFname(@Param("Fname") String Fname);
 	
 }
