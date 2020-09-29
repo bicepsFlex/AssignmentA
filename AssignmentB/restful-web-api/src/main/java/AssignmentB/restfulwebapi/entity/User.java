@@ -1,4 +1,4 @@
-package AssignmentB.restfulwebapi;
+package AssignmentB.restfulwebapi.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -27,14 +24,15 @@ public class User {
 	private String email;
 	private boolean admin;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Poll> polls = new ArrayList<Poll>();
 
-	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy = "usersVoted", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Poll> pollsVoted = new ArrayList<Poll>();
-	
-	public User() {}
-	
+
+	public User() {
+	}
+
 	public User(String uname, String fname, String lname, String password, String email, boolean admin) {
 		this.uname = uname;
 		this.fname = fname;
@@ -46,9 +44,8 @@ public class User {
 
 	public void setPolls(Poll poll) {
 		this.polls.add(poll);
-		poll.setUser(this);
 	}
-	
+
 	public void removePoll(Poll poll) {
 		poll.setUser(null);
 		this.polls.remove(poll);
@@ -58,5 +55,4 @@ public class User {
 		this.pollsVoted.add(poll);
 	}
 
-	
 }

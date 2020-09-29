@@ -1,4 +1,4 @@
-package AssignmentB.restfulwebapi;
+package AssignmentB.restfulwebapi.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,7 @@ public class Poll {
 
 	public void setUser(User user) {
 		this.user = user;
+		user.setPolls(this);
 	}
 	
 	public void setVoteRed(int red) {
